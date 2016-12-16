@@ -1,3 +1,4 @@
+const argv = require('./lib/argv-handler.js');
 const wakeUp = require('./lib/wol.js');
 const Hapi = require('hapi');
 
@@ -5,7 +6,7 @@ const Hapi = require('hapi');
 const server = new Hapi.Server();
 server.connection({ 
     host: '0.0.0.0', 
-    port: process.argv[2] || 8002
+    port: argv.port
 });
 
 // Add the route
@@ -13,7 +14,7 @@ server.route({
     method: 'GET',
     path:'/wakeup', 
     handler: function (request, reply) {
-        wakeUp(function(err, out){ // send WOL packet.
+        wakeUp(argv.mac, function(err, out){ // send WOL packet.
           console.log(err ? err : out);
           return reply(err ? err : out);
         });
