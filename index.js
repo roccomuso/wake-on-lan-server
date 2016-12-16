@@ -14,6 +14,7 @@ server.route({
     path:'/wakeup', 
     handler: function (request, reply) {
         wakeUp(function(err, out){ // send WOL packet.
+          console.log(err ? err : out);
           return reply(err ? err : out);
         });
     }
