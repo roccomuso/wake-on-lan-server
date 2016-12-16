@@ -1,4 +1,4 @@
-const wakeUp = require('./wol.js');
+const wakeUp = require('./lib/wol.js');
 const Hapi = require('hapi');
 
 // Create a server with a host and port
