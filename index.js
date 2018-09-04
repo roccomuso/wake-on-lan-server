@@ -1,30 +1,16 @@
-const argv = require('./lib/argv-handler.js');
-const wakeUp = require('./lib/wol.js');
-const Hapi = require('hapi');
+var connect = require('connect')
+var http = require('http')
+const argv = require('./lib/argv-handler.js')
+const wakeUp = require('./lib/wol.js')
 
-// Create a server with a host and port
-const server = new Hapi.Server();
-server.connection({ 
-    host: '0.0.0.0', 
-    port: Number(argv.port)
-});
+var app = connect()
 
-// Add the route
-server.route({
-    method: 'GET',
-    path:'/wakeup', 
-    handler: function (request, reply) {
-        wakeUp(argv.mac, function(err, out){ // send WOL packet.
-          console.log(err ? err : out);
-          return reply(err ? err : out);
-        });
-    }
-});
+app.use('/wakeup', (req, res) => {
+  wakeUp(argv.mac, function(err, out){ // send WOL packet.
+    console.log(err ? err : out)
+    return res.end(err ? err : out)
+  })
+})
 
-// Start the server
-server.start((err) => {
-    if (err) {
-        throw err;
-    }
-    console.log('WakeOnLAN Server running at:', server.info.uri);
-});
+http.createServer(app).listen(Number(argv.port));
+console.log(`Listening on ${argv.port}`)

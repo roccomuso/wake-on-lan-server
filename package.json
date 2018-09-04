@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "hapi": "^16.0.1",
+    "connect": "^3.6.6",
     "node-wol": "^0.1.1",
     "yargs": "^6.5.0"
   }
